@@ -5,11 +5,8 @@ public class WeakPredator implements Predator,Displayable {
     private Point position;
     private boolean alive = true;
 
-    public WeakPredator(int x, int y){
-        position = new Point();
-        position.x = x;
-        position.y = y;
-    }
+    public WeakPredator(){ position = Deployer.getPredatorPosition(); }
+    public WeakPredator(Point position){ this.position = position; }
 
     @Override
     public Point getPosition() {
@@ -18,7 +15,7 @@ public class WeakPredator implements Predator,Displayable {
 
     @Override
     public Color getKind() {
-        return Color.ORANGE;
+        return Color.MAGENTA;
     }
 
     @Override

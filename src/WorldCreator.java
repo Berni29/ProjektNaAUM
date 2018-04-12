@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class WorldCreator {
-    private Cell[][] world;
+    private static Cell[][] world;
     private int x = 0 , y = 0;
 
     public WorldCreator(File path) {
@@ -14,10 +14,19 @@ public class WorldCreator {
         String[] info = {"","",""};
         world = new Cell[x+1][y+1];
         for(int i = 0; i <= x; i++) {
-            for(int j = 0; j <= y; j++) {
+            for (int j = 0; j <= y; j++) {
                 world[i][j] = new Cell();
+                if (i < 10 && j < 10)
+                    world[i][j].setArea(1);
+                if (i >= 10 && i < 20 && j < 10)
+                    world[i][j].setArea(2);
+                if (i < 10 && j >= 10 && j < 20)
+                    world[i][j].setArea(3);
+                if (i >= 10 && i < 20 && j >= 10 && j < 20)
+                    world[i][j].setArea(4);
             }
         }
+
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
             for(int i = 0 ; i < (x+1)*(y+1) ; i++) {
@@ -87,6 +96,10 @@ public class WorldCreator {
         } catch(IOException e) {
             e.printStackTrace();
         }
+
+        BiomDeployer.createBiomWorld();
+        TablesGenerator.checkTabSize();
+        TablesGenerator.createTabs();
     }
 
     private void checkSize(File path){
@@ -110,9 +123,7 @@ public class WorldCreator {
         }
     }
 
-    public Cell[][] getWorld() {
-        return world;
-    }
+    public static Cell[][] getWorld() { return world; }
 
     public Point getSize(){
         Point p = new Point();
