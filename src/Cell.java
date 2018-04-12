@@ -14,6 +14,7 @@ public class Cell {
     private Predator predator = null;
     private int biom = 0;
     private static int cellSize = 4;
+    private int a = 0;
 
     public static int getCellSize() {
         return cellSize;
