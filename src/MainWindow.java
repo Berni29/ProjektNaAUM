@@ -7,13 +7,15 @@ public class MainWindow {
 
     private JPanel mainPanel;
     private WorldMap worldMap;
+    private static JFrame frame;
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("MainWindow");
+        frame = new JFrame("MainWindow");
         frame.setContentPane(new MainWindow().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
     }
 
     private void createUIComponents() {
@@ -23,6 +25,9 @@ public class MainWindow {
             Point s = wc.getSize();
             MapCreator mc = new MapCreator(wc.getWorld(), 30, s.x, s.y);
             worldMap = new WorldMap(wc, mc, 30);
+            Configuration dialog = new Configuration(frame,worldMap);
+            dialog.pack();
+            dialog.setVisible(true);
         }
         catch (URISyntaxException e){
             e.printStackTrace();

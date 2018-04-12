@@ -5,6 +5,7 @@ public class Food implements Displayable {
     private Point position;
 
     public Food(){ position = Deployer.getFoodPosition(); }
+    public Food(Point position){ this.position = position; }
 
     @Override
     public Point getPosition() {
@@ -13,7 +14,7 @@ public class Food implements Displayable {
 
     @Override
     public Color getKind() {
-        return Color.YELLOW;
+        return Color.ORANGE;
     }
 
 }

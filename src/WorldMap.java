@@ -6,9 +6,10 @@ import java.util.HashSet;
 public class WorldMap extends JComponent {
 
     private BufferedImage map;
-    private Cell[][] world;
+    public Cell[][] world;
     private HashSet<Displayable> objects = new HashSet<>();
     private int cellSize;
+    private NewDeployer dp;
 
     public WorldMap(WorldCreator wc, MapCreator mp, int cellSize) {
         world = wc.getWorld();
@@ -29,6 +30,14 @@ public class WorldMap extends JComponent {
 
     public void addObject(Displayable obj) {
         objects.add(obj);
+        int x = obj.getPosition().x;
+        int y = obj.getPosition().y;
+        world[x][y].setObject(obj);
+    }
+
+    public void setConfig(int maxFood, int maxStrongPreds, int maxWeakPreds){
+        dp = new NewDeployer(this,world,maxStrongPreds,maxWeakPreds,maxFood);
+        dp.deploy();
     }
 
 }

@@ -6,6 +6,7 @@ public class StrongPredator implements Predator,Displayable {
     private boolean alive = true;
 
     public StrongPredator(){ position = Deployer.getPredatorPosition(); }
+    public StrongPredator(Point position){ this.position = position; }
 
     @Override
     public Point getPosition() {
