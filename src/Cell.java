@@ -1,10 +1,10 @@
 public class Cell {
 
-    public static final int FOREST = 1; // very high amount of food and dangers
-    public static final int DESERT = 2; // very low amount of food and dangers
-    public static final int FIELD = 3; // high amount of food and dangers
-    public static final int MOUNTAIN = 4; // low amount of food and dangers
-    public static final int SWAMP = 5; // low amount of food and high amount of dangers
+    public static final int FOREST = 1; // very high amount of food and moderate danger
+    public static final int DESERT = 2; // very low amount of food and low danger
+    public static final int FIELD = 3; // high amount of food and moderate danger
+    public static final int MOUNTAIN = 4; // low amount of food and moderate danger
+    public static final int SWAMP = 5; // moderate amount of food and high danger
 
     private boolean top = false;
     private boolean right = false;
@@ -12,7 +12,8 @@ public class Cell {
     private boolean left = false;
     private boolean food = false;
     private Predator predator = null;
-    private int biom = 0;
+    private static int biom = 0;
+    private int area = 0;
     private static int cellSize = 4;
 
     public static int getCellSize() {
@@ -63,13 +64,17 @@ public class Cell {
         this.food = food;
     }
 
-    public int getBiom() {
+    public static int getBiom() {
         return biom;
     }
 
     public void setBiom(int biom) {
         this.biom = biom;
     }
+
+    public int getArea() { return area; }
+
+    public void setArea(int area) { this.area = area; }
 
     public Predator getPredator() {
         return predator;

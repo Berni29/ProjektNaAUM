@@ -23,11 +23,6 @@ public class MainWindow {
             Point s = wc.getSize();
             MapCreator mc = new MapCreator(wc.getWorld(), 30, s.x, s.y);
             worldMap = new WorldMap(wc, mc, 30);
-            worldMap.addObject(new Food(10,15));
-            worldMap.addObject(new Food(15,10));
-            worldMap.addObject(new Food(5,5));
-            worldMap.addObject(new Food(10,10));
-            worldMap.addObject(new Food(15,15));
         }
         catch (URISyntaxException e){
             e.printStackTrace();

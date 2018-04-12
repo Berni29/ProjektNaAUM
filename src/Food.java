@@ -4,11 +4,7 @@ public class Food implements Displayable {
 
     private Point position;
 
-    public Food(int x, int y){
-        position = new Point();
-        position.x = x;
-        position.y = y;
-    }
+    public Food(){ position = Deployer.getFoodPosition(); }
 
     @Override
     public Point getPosition() {
