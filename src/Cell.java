@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class Cell {
 
     public static final int FOREST = 1; // very high amount of food and moderate danger
@@ -9,17 +11,17 @@ public class Cell {
     private boolean right = false;
     private boolean bottom = false;
     private boolean left = false;
-    private Displayable object = null;
+    private Point location;
+    private Interactable object = null;
     private int biom = 0;
     private int area = 0;
-    private static int cellSize = 4;
 
-    public static int getCellSize() {
-        return cellSize;
+    public Cell(int x, int y){
+        location = new Point(x,y);
     }
 
-    public static void setCellSize(int cellSize) {
-        Cell.cellSize = cellSize;
+    public Point getLocation() {
+        return location;
     }
 
     public boolean isTop() {
@@ -66,11 +68,11 @@ public class Cell {
 
     public void setArea(int area) { this.area = area; }
 
-    public Displayable getObject() {
+    public Interactable getObject() {
         return object;
     }
 
-    public void setObject(Displayable object) {
+    public void setObject(Interactable object) {
         this.object = object;
     }
 }

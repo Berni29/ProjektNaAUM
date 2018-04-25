@@ -1,4 +1,4 @@
 public interface Predator {
     int getPower();
-    void attack();
+    int attack(int power);
 }

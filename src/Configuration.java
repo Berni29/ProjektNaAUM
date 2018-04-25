@@ -8,6 +8,7 @@ public class Configuration extends JDialog {
     private JTextField food;
     private JTextField strongPreds;
     private JTextField weakPreds;
+    private JTextField travelers;
     private WorldMap wp;
     private JFrame frame;
 
@@ -50,11 +51,13 @@ public class Configuration extends JDialog {
         int foodVal = 0;
         int strongPredators = 0;
         int weakPredators = 0;
+        int travelersNum = 0;
         try {
             foodVal = Integer.parseInt(food.getText());
             strongPredators = Integer.parseInt(strongPreds.getText());
             weakPredators = Integer.parseInt(weakPreds.getText());
-            wp.setConfig(foodVal,strongPredators,weakPredators);
+            travelersNum = Integer.parseInt(travelers.getText());
+            wp.setConfig(foodVal,strongPredators,weakPredators,travelersNum);
             this.setVisible(false);
             frame.setVisible(true);
             wp.repaint();

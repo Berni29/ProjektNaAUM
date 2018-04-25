@@ -1,12 +1,17 @@
 import java.awt.*;
 
-public class WeakPredator implements Predator,Displayable {
+public class WeakPredator implements Predator, Interactable {
+
+    public static final int KIND = 2;
 
     private Point position;
     private boolean alive = true;
+    private Cell[][] map;
 
-    public WeakPredator(){ position = Deployer.getPredatorPosition(); }
-    public WeakPredator(Point position){ this.position = position; }
+    public WeakPredator(Point position, Cell[][] map){
+        this.position = position;
+        this.map = map;
+    }
 
     @Override
     public Point getPosition() {
@@ -14,17 +19,31 @@ public class WeakPredator implements Predator,Displayable {
     }
 
     @Override
-    public Color getKind() {
-        return Color.MAGENTA;
+    public int getKind() {
+        return KIND;
     }
 
     @Override
     public int getPower() {
-        return 10;
+        return 50;
     }
 
     @Override
-    public void attack() {
+    public int attack(int power) {
+        if(power>50){
+            alive = false;
+            return 25;
+        }
+        else {
+            return 50;
+        }
+    }
+    public boolean check(){
+        return alive;
+    }
+
+    @Override
+    public void action() {
 
     }
 }

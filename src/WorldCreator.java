@@ -15,7 +15,7 @@ public class WorldCreator {
         world = new Cell[x+1][y+1];
         for(int i = 0; i <= x; i++) {
             for (int j = 0; j <= y; j++) {
-                world[i][j] = new Cell();
+                world[i][j] = new Cell(i,j);
                 if (i < 10 && j < 10)
                     world[i][j].setArea(1);
                 if (i >= 10 && i < 20 && j < 10)
@@ -26,7 +26,7 @@ public class WorldCreator {
                     world[i][j].setArea(4);
             }
         }
-
+        BiomSetter.setBioms(world);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
             for(int i = 0 ; i < (x+1)*(y+1) ; i++) {
@@ -96,10 +96,6 @@ public class WorldCreator {
         } catch(IOException e) {
             e.printStackTrace();
         }
-
-        BiomDeployer.createBiomWorld();
-        TablesGenerator.checkTabSize();
-        TablesGenerator.createTabs();
     }
 
     private void checkSize(File path){
