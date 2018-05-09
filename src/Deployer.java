@@ -55,6 +55,7 @@ public class Deployer {
             y = rng.nextInt(heigth);
             if(world[x][y].getObject()==null){
                 Traveler trav = oldTravelers.get(i);
+                trav.printMap();
                 trav.refresh();
                 trav.setPosition(new Point(x,y));
                 wm.addObject(trav);
@@ -201,6 +202,7 @@ public class Deployer {
                 travelers++;
             }
         }
+        wm.addTravelers(oldTravelers);
     }
 
 }

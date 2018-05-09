@@ -46,4 +46,9 @@ public class Food implements Interactable {
     public void action() {
 
     }
+
+    @Override
+    public int getEnergy() {
+        return energy;
+    }
 }

@@ -32,7 +32,7 @@ public class MainWindow {
 
     private void createUIComponents() {
         try {
-            File f = new File(MainWindow.class.getResource("SampleMaze1.txt").toURI());
+            File f = new File(MainWindow.class.getClassLoader().getResource("SampleMaze1.txt").toURI());
             WorldCreator wc = new WorldCreator(f);
             Point s = wc.getSize();
             MapCreator mc = new MapCreator(wc.getWorld(), 45, s.x, s.y);

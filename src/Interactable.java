@@ -6,5 +6,6 @@ public interface Interactable {
     Point getPosition();
     boolean check();
     void action();
+    int getEnergy();
 
 }

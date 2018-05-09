@@ -45,4 +45,9 @@ public class StrongPredator implements Predator, Interactable {
     public void action() {
 
     }
+
+    @Override
+    public int getEnergy() {
+        return 100;
+    }
 }

@@ -43,6 +43,11 @@ public class WeakPredator implements Predator, Interactable {
     }
 
     @Override
+    public int getEnergy() {
+        return 50;
+    }
+
+    @Override
     public void action() {
 
     }
