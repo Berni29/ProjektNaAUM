@@ -90,8 +90,6 @@ public class WorldMap extends JComponent {
         simulation = new Thread(new Runnable() {
             @Override
             public void run() {
-                objects.add(new Traveler(new Point(0,0),world));
-                objects.add(new Food(new Point(9,9),world));
                 while(true) {
                     repaint();
                     try {

@@ -8,7 +8,7 @@ public class Traveler implements Interactable {
     private int energy = 100;
     private Point position;
     private Cell[][] map;
-    private int[][] knowledgeMap;
+    private double[][] knowledgeMap;
     private LinkedList<Point> track = new LinkedList<>();
     private Random dice = new Random();
     private boolean alive = true;
@@ -16,10 +16,10 @@ public class Traveler implements Interactable {
     public Traveler(Point position, Cell[][] map) {
         this.position = position;
         this.map = map;
-        knowledgeMap = new int[map.length][map[0].length];
+        knowledgeMap = new double[map.length][map[0].length];
         for (int i = 0; i < knowledgeMap.length; i++) {
             for (int j = 0; j < knowledgeMap[i].length; j++) {
-                knowledgeMap[i][j]=1;
+                knowledgeMap[i][j]=0.1;
             }
         }
     }
@@ -80,19 +80,19 @@ public class Traveler implements Interactable {
                         StrongPredator strPred = (StrongPredator) something;
                         energy -= strPred.attack(energy);
                         track.push(way);
-                        learn(-100);
+                        learn(-1);
                         break;
                     case WeakPredator.KIND:
                         WeakPredator weakPred = (WeakPredator) something;
                         energy -= weakPred.attack(energy);
                         track.push(way);
-                        learn(-100);
+                        learn(-1);
                         break;
                     case Food.KIND:
                         Food food = (Food) something;
                         energy += food.takeFood();
                         track.push(way);
-                        learn(100);
+                        learn(1);
                 }
             } else {
                 map[position.x][position.y].setObject(null);
@@ -129,7 +129,7 @@ public class Traveler implements Interactable {
         return way;
     }
 
-    private int[][] shareKnowledge(int[][] knowledgeMap){
+    private double[][] shareKnowledge(double[][] knowledgeMap){
         for(int i = 0; i < knowledgeMap.length; i++){
             for(int j = 0; j < knowledgeMap[i].length; j++){
                 this.knowledgeMap[i][j] += knowledgeMap[i][j];
@@ -139,18 +139,16 @@ public class Traveler implements Interactable {
     }
 
     private void learn(int reward){
-        int val = reward;
+        double val = reward;
         Point p;
         while(track.size()>0){
             p = track.pop();
-            if(knowledgeMap[p.x][p.y]+val>0) {
+            if(reward==1){
                 knowledgeMap[p.x][p.y] += val;
-            }
-            if(reward==100){
-                val--;
-            }
-            else {
-                val++;
+                val -= 0.05;
+            }else {
+                knowledgeMap[p.x][p.y] += val;
+                val += 0.05;
             }
         }
     }
@@ -162,7 +160,6 @@ public class Traveler implements Interactable {
 
     private Point exploitation(Point pos){
         ArrayList<Point> possibleRoute = new ArrayList<>();
-        Point way = pos;
         if(!map[pos.x][pos.y].isTop()) {
             possibleRoute.add(new Point(pos.x,pos.y-1));
         }
@@ -175,26 +172,31 @@ public class Traveler implements Interactable {
         if(!map[pos.x][pos.y].isLeft()) {
             possibleRoute.add(new Point(pos.x-1,pos.y));
         }
-        double sum = 0;
-        Double r = dice.nextDouble();
-        for(Point p : possibleRoute){
-            sum += knowledgeMap[p.x][p.y];
+        if(possibleRoute.size()==0){
+            return pos;
         }
-        ArrayList<Double> list = new ArrayList<>();
-        for(Point p : possibleRoute){
-            double result = knowledgeMap[p.x][p.y]/sum;
-            list.add(result);
-        }
-        double begin = 0;
-        int result = 0;
-        for(int i = 0; i < list.size(); i++){
-            if(r>begin && r<list.get(i)+begin){
-                result = i;
-                break;
+        if(possibleRoute.size()==1){
+            return possibleRoute.get(0);
+        } else {
+            Point beenBefore = track.peek();
+            for(Point point : possibleRoute){
+                if(point.x==beenBefore.x && point.y==beenBefore.y){
+                    beenBefore = point;
+                    break;
+                }
             }
-            begin += list.get(i);
+            possibleRoute.remove(beenBefore);
+            double highest = knowledgeMap[possibleRoute.get(0).x][possibleRoute.get(0).y];
+            int index = 0;
+            for (int i = 0; i < possibleRoute.size(); i++) {
+                Point point = possibleRoute.get(i);
+                if(knowledgeMap[point.x][point.y]>highest){
+                    highest = knowledgeMap[point.x][point.y];
+                    index = i;
+                }
+            }
+            return possibleRoute.get(index);
         }
-        return possibleRoute.get(result);
     }
     public void printMap(){
         for (int j = 0; j < knowledgeMap[0].length; j++) {
