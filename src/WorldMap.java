@@ -12,7 +12,7 @@ public class WorldMap extends JComponent {
     private BufferedImage map;
     private Cell[][] world;
     private ArrayList<Interactable> objects = new ArrayList<>();
-    private ArrayList<Traveler> travelers = new ArrayList<>();
+    private ArrayList<QLearningTraveler> travelers = new ArrayList<>();
     private int cellSize;
     private Deployer dp;
     private BufferedImage food;
@@ -72,7 +72,7 @@ public class WorldMap extends JComponent {
         int y = obj.getPosition().y;
         world[x][y].setObject(obj);
     }
-    public void addTravelers(ArrayList<Traveler> oldTravelers) {
+    public void addTravelers(ArrayList<QLearningTraveler> oldTravelers) {
         travelers = oldTravelers;
     }
 
@@ -105,7 +105,7 @@ public class WorldMap extends JComponent {
         }
     }
     private boolean anyAlive(){
-        for(Traveler t : travelers){
+        for(QLearningTraveler t : travelers){
             if(t.isAlive()){
                 return true;
             }

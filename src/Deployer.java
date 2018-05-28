@@ -20,7 +20,7 @@ public class Deployer {
     private ArrayList<Point> strongXY = new ArrayList<>();
     private ArrayList<Point> weakXY = new ArrayList<>();
     private ArrayList<Point> foodXY = new ArrayList<>();
-    private ArrayList<Traveler> oldTravelers = new ArrayList<>();
+    private ArrayList<QLearningTraveler> oldTravelers = new ArrayList<>();
 
     public Deployer(WorldMap wm, Cell[][] world, int maxStrongPredators, int maxWeakPredators, int maxFood, int maxTravelers) {
         this.wm = wm;
@@ -53,9 +53,9 @@ public class Deployer {
             x = rng.nextInt(width);
             y = rng.nextInt(heigth);
             if(world[x][y].getObject()==null){
-                Traveler trav = oldTravelers.get(i);
-                trav.updateMap();
-                trav.refresh();
+                QLearningTraveler trav = oldTravelers.get(i);
+//                trav.updateMap();
+//                trav.refresh();
                 trav.setPosition(new Point(x,y));
                 wm.addObject(trav);
                 i++;
@@ -195,7 +195,7 @@ public class Deployer {
             y = rng.nextInt(heigth);
             if (world[x][y].getObject()==null){
                 Point XY = new Point(x,y);
-                Traveler trav = new Traveler(XY,wm.getWorld());
+                QLearningTraveler trav = new QLearningTraveler(XY,wm.getWorld());
                 wm.addObject(trav);
                 oldTravelers.add(trav);
                 travelers++;
