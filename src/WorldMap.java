@@ -93,7 +93,7 @@ public class WorldMap extends JComponent {
                 while(true) {
                     repaint();
                     try {
-                        TimeUnit.MILLISECONDS.sleep(200);
+                        TimeUnit.MILLISECONDS.sleep(50);
                     }
                     catch (InterruptedException e){
                         e.printStackTrace();

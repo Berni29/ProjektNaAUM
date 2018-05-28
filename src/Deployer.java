@@ -55,7 +55,7 @@ public class Deployer {
             if(world[x][y].getObject()==null){
                 QLearningTraveler trav = oldTravelers.get(i);
 //                trav.updateMap();
-//                trav.refresh();
+                trav.refresh();
                 trav.setPosition(new Point(x,y));
                 wm.addObject(trav);
                 i++;
