@@ -4,7 +4,7 @@ public class Food implements Interactable {
 
     public final static int KIND = 1;
     private Point position;
-    private int energy = 100;
+    private int energy = 10;
     private Cell[][] map;
 
     public Food(Point position, Cell[][] map){

@@ -34,7 +34,6 @@ public class Deployer {
     }
 
     public void reset() {
-
         for (int i = 0; i < world.length; i++) {
             for (int j = 0; j < world[i].length; j++) {
                 world[i][j].setObject(null);
@@ -55,7 +54,7 @@ public class Deployer {
             y = rng.nextInt(heigth);
             if(world[x][y].getObject()==null){
                 Traveler trav = oldTravelers.get(i);
-                trav.printMap();
+                trav.updateMap();
                 trav.refresh();
                 trav.setPosition(new Point(x,y));
                 wm.addObject(trav);
