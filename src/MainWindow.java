@@ -9,13 +9,14 @@ public class MainWindow {
 
     private JPanel mainPanel;
     private WorldMap worldMap;
+    private JSlider speed;
     private static JFrame frame;
 
     public MainWindow() {
         worldMap.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                worldMap.action();
+                worldMap.action(speed);
                 worldMap.repaint();
             }
         });

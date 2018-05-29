@@ -31,6 +31,7 @@ public class StrongPredator implements Predator, Interactable {
     @Override
     public int attack(int power) {
         if(power>100){
+            alive = false;
             return 50;
         }
         else {

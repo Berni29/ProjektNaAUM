@@ -11,6 +11,7 @@ public class WorldMap extends JComponent {
 
     private BufferedImage map;
     private Cell[][] world;
+    private JSlider speed;
     private ArrayList<Interactable> objects = new ArrayList<>();
     private ArrayList<QLearningTraveler> travelers = new ArrayList<>();
     private int cellSize;
@@ -47,10 +48,12 @@ public class WorldMap extends JComponent {
         removeCorpses();
         for(Interactable obj : objects){
             obj.action();
+            g2d.setFont(new Font(Font.SANS_SERIF,Font.BOLD,10));
             switch(obj.getKind()){
                 case Food.KIND:
                     g2d.drawImage(food,obj.getPosition().x*cellSize,obj.getPosition().y*cellSize,cellSize,cellSize,null);
-                    g2d.drawString(String.valueOf(obj.getEnergy()),obj.getPosition().x*cellSize,obj.getPosition().y*cellSize);
+                    g2d.setColor(Color.RED);
+                    g2d.drawString(String.valueOf(obj.getEnergy()),obj.getPosition().x*cellSize,obj.getPosition().y*cellSize+10);
                     break;
                 case WeakPredator.KIND:
                     g2d.drawImage(weak,obj.getPosition().x*cellSize,obj.getPosition().y*cellSize,cellSize,cellSize,null);
@@ -59,8 +62,12 @@ public class WorldMap extends JComponent {
                     g2d.drawImage(strong,obj.getPosition().x*cellSize,obj.getPosition().y*cellSize,cellSize,cellSize,null);
                     break;
                 case Traveler.KIND:
+                    QLearningTraveler trav = (QLearningTraveler)obj;
                     g2d.drawImage(traveler,obj.getPosition().x*cellSize,obj.getPosition().y*cellSize,cellSize,cellSize,null);
-                    g2d.drawString(String.valueOf(obj.getEnergy()),obj.getPosition().x*cellSize,obj.getPosition().y*cellSize);
+                    g2d.setColor(Color.RED);
+                    g2d.drawString(String.valueOf(obj.getEnergy()),obj.getPosition().x*cellSize,obj.getPosition().y*cellSize+10);
+                    g2d.setColor(Color.BLUE);
+                    g2d.drawString(String.format("%.2f",trav.getConfidence()),obj.getPosition().x*cellSize,obj.getPosition().y*cellSize+20);
                     break;
             }
         }
@@ -85,7 +92,7 @@ public class WorldMap extends JComponent {
         return world;
     }
 
-    public void action(){
+    public void action(JSlider speed){
         if(simulation == null){
         simulation = new Thread(new Runnable() {
             @Override
@@ -93,7 +100,7 @@ public class WorldMap extends JComponent {
                 while(true) {
                     repaint();
                     try {
-                        TimeUnit.MILLISECONDS.sleep(50);
+                        TimeUnit.MILLISECONDS.sleep(speed.getValue());
                     }
                     catch (InterruptedException e){
                         e.printStackTrace();

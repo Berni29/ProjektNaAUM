@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class QLearningTraveler implements Interactable {
@@ -13,9 +14,13 @@ public class QLearningTraveler implements Interactable {
     private Random rng = new Random();
     private boolean alive = true;
     private double confidence = 0;
+    private LinkedList<Point> track = new LinkedList<>();
+    private LinkedList<Point> visited = new LinkedList<>();
 
     public QLearningTraveler(Point position, Cell[][] map) {
         this.position = position;
+        track.push(position);
+        visited.push(position);
         this.map = map;
         int states = map.length * map[0].length;
         r = new double[states][states];
@@ -95,10 +100,10 @@ public class QLearningTraveler implements Interactable {
     private void exploitation(ArrayList<Point> ways){
         int state = position.x + (position.y*20);
         Point way = ways.get(0);
-        double max = q[state][way.x + (way.y*20)];
+        double max = q[way.x + (way.y*20)][state];
         for(Point p : ways){
-            if(max < q[state][p.x + (p.y*20)]){
-                max = q[state][p.x + (p.y*20)];
+            if(max < q[p.x + (p.y*20)][state]){
+                max = q[p.x + (p.y*20)][state];
                 way = p;
             }
         }
@@ -106,12 +111,16 @@ public class QLearningTraveler implements Interactable {
     }
 
     private void move(Point way){
+        if(!checkVisited(position)) {
+            visited.push(position);
+        }
         map[position.x][position.y].setObject(null);
         map[way.x][way.y].setObject(this);
         int state = position.x + (position.y*20);
         int action = way.x + (way.y*20);
         computeQ(state,action);
         position = way;
+        track.push(position);
         energy--;
     }
 
@@ -138,6 +147,8 @@ public class QLearningTraveler implements Interactable {
                         move(way);
                     }
                     break;
+                default:
+                    move(track.pop());
             }
         } else {
             move(way);
@@ -161,6 +172,8 @@ public class QLearningTraveler implements Interactable {
 
     public void setPosition(Point position) {
         this.position = position;
+        track.push(position);
+        visited.push(position);
     }
 
     private ArrayList<Point> possibleWays(){
@@ -179,18 +192,22 @@ public class QLearningTraveler implements Interactable {
         if(!map[x][y].isLeft()){
             ways.add(new Point(x-1,y));
         }
+        deleteVisited(ways);
+        if(ways.isEmpty()){
+            ways.add(track.pop());
+        }
         return ways;
     }
 
     private void computeQ(int state,int action){
-        q[state][action] = r[state][action] + gamma * maxQ(action);
+        q[action][state] = r[action][state] + gamma * maxQ(action);
     }
 
     private double maxQ(int state){
         double max = q[state][0];
         for (int i = 0; i < q[state].length; i++) {
-            if(max<q[state][i]){
-                max = q[state][i];
+            if(max<q[i][state]){
+                max = q[i][state];
             }
         }
         return max;
@@ -200,5 +217,32 @@ public class QLearningTraveler implements Interactable {
         alive = true;
         energy = 50;
         confidence += 0.01;
+        track.clear();
+        visited.clear();
+    }
+
+    private boolean checkVisited(Point point){
+        for(Point p : visited){
+            if(p.x==point.x && p.y==point.y){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void deleteVisited(ArrayList<Point> ways){
+        LinkedList<Point> beenBefore = new LinkedList<>();
+        for(Point way : ways){
+            if(checkVisited(way)){
+                beenBefore.add(way);
+            }
+        }
+        for(Point p : beenBefore){
+            ways.remove(p);
+        }
+    }
+
+    public double getConfidence(){
+        return confidence;
     }
 }
