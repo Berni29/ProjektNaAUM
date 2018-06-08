@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class QLearningTraveler implements Interactable {
 
+    public static final int KIND = 4;
+
     private int energy = 50;
     private Point position;
     private Cell[][] map;
@@ -66,7 +68,7 @@ public class QLearningTraveler implements Interactable {
 
     @Override
     public int getKind() {
-        return 4;
+        return KIND;
     }
 
     @Override
@@ -146,6 +148,11 @@ public class QLearningTraveler implements Interactable {
                     if(alive){
                         move(way);
                     }
+                    break;
+                case QLearningTraveler.KIND:
+                    QLearningTraveler friend = (QLearningTraveler)someObject;
+                    friend.shareKnowledge(q);
+                    move(track.pop());
                     break;
                 default:
                     move(track.pop());
@@ -244,5 +251,17 @@ public class QLearningTraveler implements Interactable {
 
     public double getConfidence(){
         return confidence;
+    }
+
+    public void shareKnowledge(double[][] sharedQ){
+        int length = sharedQ.length;
+        double average;
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
+                average = (q[i][j]+sharedQ[i][j])/2;
+                q[i][j] = average;
+                sharedQ[i][j] = average;
+            }
+        }
     }
 }
